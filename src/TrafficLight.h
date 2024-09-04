@@ -60,8 +60,10 @@ private:
     // send in conjunction with move semantics.
 
     MessageQueue<TrafficLightPhase> _messageQueue;
-    std::condition_variable _condition;
-    std::mutex _mutex;
+
+    // I think these were here, but I don't know what date they are meant to protect.
+//    std::condition_variable _condition;
+//    std::mutex _mutex;
 };
 
 #endif

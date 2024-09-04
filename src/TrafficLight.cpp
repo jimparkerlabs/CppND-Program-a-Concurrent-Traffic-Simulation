@@ -77,20 +77,23 @@ void TrafficLight::cycleThroughPhases()
         auto currentTime = std::chrono::system_clock::now();
         auto timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(
                 currentTime - lastUpdate).count();
+
         if (timeSinceLastUpdate >= cycleDuration) {
-            std::unique_lock<std::mutex> lock(_mutex);
-
-            // wait for the condition  notification
-            _condition.wait(lock);
-
+//            std::unique_lock<std::mutex> lock(_mutex);
+//
+//            // wait for the condition notification
+//            _condition.wait(lock);
+//
             // toggle the TrafficLightPhase
-            _currentPhase = (_currentPhase == TrafficLightPhase::red) ? TrafficLightPhase::green : TrafficLightPhase::red;
+            _currentPhase = (_currentPhase == TrafficLightPhase::red) ? TrafficLightPhase::green
+                                                                      : TrafficLightPhase::red;
 
             // send an update to the message queue
             _messageQueue.send(std::move(_currentPhase));  // TODO:  MOVE a member variable ???  Think hard about this...
 
             lastUpdate = currentTime;  // TODO:  I might have been waiting, so maybe this should get the new current time?
-            lock.unlock(); // unnecessary, but I like to be explicit
+
+//            lock.unlock();
         }
     }
 }
